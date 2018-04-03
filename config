@@ -18,7 +18,7 @@ bindsym $mod+p exec gnome-screenshot -i
 
 # use mate-screensaver instead
 #bindsym $mod+ctrl+l exec i3lock -c 000000
-#bindsym $mod+l exec i3lock -c 000000
+bindsym $mod+l exec i3lock -c 000000
 
 
 # Font for window titles. Will also be used by the bar unless a different font
@@ -64,7 +64,7 @@ bindsym $mod+d exec dmenu_run -fn '-*-liberation mono-medium-r-normal-*-15-*-*-*
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
-bindsym $mod+l focus right
+#bindsym $mod+l focus right   # I am using it for screenlock as my habbit
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
