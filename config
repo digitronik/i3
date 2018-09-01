@@ -5,6 +5,11 @@
 # I using i3 over xfce fedora spin so I am using most of xfce applets
 ###############################################################################
 
+# Notes:
+# If applets are going to die on restart, use exec_always
+
+
+
 #--------------------------- Basic Setting ------------------------------------
 set $mod Mod4
 focus_follows_mouse yes
@@ -40,8 +45,8 @@ bindsym $mod+t exec tilix
 
 #-----------------------------Power Operations---------------------------------
 # Power manager handles general power management, laptop lid close/suspend 
-# and screen dimming.I am using xfce4-power-manager as xfce user. You can go 
-# with mate-power-manager
+# and screen dimming. I am using xfce4-power-manager as xfce user. You can go 
+# with other power-managers
 exec_always xfce4-power-manager
 
 # Put laptop on hibernate
@@ -54,7 +59,7 @@ bindsym $mod+Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
 #-----------------------------Display Operations-------------------------------
 ## Font for window titles. Will also be used by the bar unless a different font 
-# is used in the bar {} block below.This font is widely installed, provides 
+# is used in the bar {} block below. This font is widely installed, provides 
 # lots of unicode glyphs, right-to-left text rendering and scalability on
 # retina/hidpi displays (thanks to pango).
 font pango:DejaVu Sans Mono 11
@@ -104,9 +109,6 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# focus the child container
-#bindsym $mod+d focus child
-
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -135,15 +137,6 @@ bindsym $mod+Shift+0 move container to workspace 10
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
@@ -158,8 +151,6 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #--------------------Stuff to start for the session----------------------------
-# If applets are going to  die on restart, use exec_always
-
 ## NetworkManager applet to run in systray 
 # exec nm-applet
 # Note: disable nm-applet. I dont like GUI. `nmtui` allows me connection edit 
@@ -173,24 +164,23 @@ bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound vo
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
 
-# lockscreen and such
-#exec mate-screensaver
-
 # Run mate-settings-daemon for gnome-keyring
 # gnome-keyring-daemon is handled by ~/.profile
 exec --no-startup-id /usr/libexec/mate-settings-daemon
 
+# To controlling system-wide privilege
 # Run xfce-polkit or polkit-mate-authentication-agent-1 for polkit
 exec /usr/libexec/xfce-polkit
 
-# Because I like notifications (dnf install dunst)
-exec dunst
+# I dont like notifications so I am not using. but you can get notifications
+# with dunst (dnf install dunst)
+# exec dunst
 
 # Because I'm lazy and like SELinux notifications
 exec seapplet
 
 # I'm too lazy to jack with bluetoothctl all the time. As xfce user no bluetooth
-# applet pre-install so install(sudo dnf install blueman) remember remove gnome :D
+# applet pre-install so install(sudo dnf install blueman)
 exec blueman-applet
 
 # redshift-gtk is for your eye care. I wont use it now.
@@ -220,6 +210,7 @@ exec --no-startup-id dropbox start
 #        position top
 #        status_command i3status
 #}
+
 
 # I like to use i3blicks with customization scrips for my own stuffs refer
 # i3blocks bar (https://github.com/vivien/i3blocks). you can install with yum 
