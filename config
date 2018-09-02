@@ -6,7 +6,7 @@
 ###############################################################################
 
 # Notes:
-# If applets are going to die on restart, use exec_always
+# If applets are going to die on a restart, use exec_always
 
 
 
@@ -60,7 +60,7 @@ bindsym $mod+Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 #-----------------------------Display Operations-------------------------------
 ## Font for window titles. Will also be used by the bar unless a different font 
 # is used in the bar {} block below. This font is widely installed, provides 
-# lots of unicode glyphs, right-to-left text rendering and scalability on
+# lots of Unicode glyphs, right-to-left text rendering and scalability on
 # retina/hidpi displays (thanks to pango).
 font pango:DejaVu Sans Mono 11
 # X core fonts rendering does not support right-to-left and this being a bitmap
@@ -92,7 +92,7 @@ bindsym $mod+o split h
 # split in vertical orientation
 bindsym $mod+v split v
 
-# enter fullscreen mode for the focused container
+# enter the fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
 # change container layout (stacked, tabbed, toggle split)
@@ -133,7 +133,7 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-# resize window (you can also use the mouse for that)
+# resize the window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
 
@@ -151,9 +151,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 #--------------------Stuff to start for the session----------------------------
-## NetworkManager applet to run in systray 
+## NetworkManager applet to run in the systray 
 # exec nm-applet
-# Note: disable nm-applet. I dont like GUI. `nmtui` allows me connection edit 
+# Note: disable nm-applet. I don't like GUI. `nmtui` allows me connection edit 
 # and not need the applet, i3block gives all needed info related to Network.
 
 ## Volume applet control all volume activities
@@ -172,7 +172,7 @@ exec --no-startup-id /usr/libexec/mate-settings-daemon
 # Run xfce-polkit or polkit-mate-authentication-agent-1 for polkit
 exec /usr/libexec/xfce-polkit
 
-# I dont like notifications so I am not using. but you can get notifications
+# I don't like notifications so I am not using. but you can get notifications
 # with dunst (dnf install dunst)
 # exec dunst
 
@@ -183,10 +183,10 @@ exec seapplet
 # applet pre-install so install(sudo dnf install blueman)
 exec blueman-applet
 
-# redshift-gtk is for your eye care. I wont use it now.
+# redshift-gtk is for your eye care. I won't use it now.
 # exec redshift-gtk -l 18.52:73.85
 
-# I use feh to manage images than other buly image managing softwares. set wall
+# I use feh to manage images than other bully image managing software. set wall
 exec --no-startup-id feh --bg-scale ~/.config/i3/Pictures/py_1.jpg
 
 # I am user of dropbox :D, so i added it. 

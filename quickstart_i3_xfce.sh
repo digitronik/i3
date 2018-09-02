@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# i3lock installtion
+# i3lock installation
 sudo dnf i3lock
 
 # Enable i3block copper repo else install with source code
@@ -19,7 +19,7 @@ sudo dnf install pango
 # For notification
 sudo dnf install dunst
 
-# For bluetooth
+# For Bluetooth
 sudo dnf install blueman
 
 # For wallpaper and picture viewer
