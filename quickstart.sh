@@ -7,24 +7,6 @@ sudo dnf i3lock
 sudo dnf -y copr enable wyvie/i3blocks
 sudo dnf install i3blocks
 
-# Monitor possition setting arandr
-sudo dnf install arandr
-
-# Terminal tilix
-sudo dnf install tilix
-
-# For laying out and rendering of text
-sudo dnf install pango
-
-# For notification
-sudo dnf install dunst
-
-# For Bluetooth
-sudo dnf install blueman
-
-# For wallpaper and picture viewer
-sudo dnf install feh
-
 # clear blocks created by i3blocks
 sudo rm -rf /usr/libexec/i3blocks
 
