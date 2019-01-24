@@ -163,7 +163,10 @@ bindsym $mod+r mode "resize"
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
-bindsym XF86AudioMicMute exec amixer set Capture toggle
+
+bindsym Shift+XF86AudioRaiseVolume exec pactl set-source-volume 1 +5% #increase mic volume
+bindsym Shift+XF86AudioLowerVolume exec pactl set-source-volume 1 -5% #decrease mic volume
+bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle # mute mic
 
 # Run mate-settings-daemon for gnome-keyring
 # gnome-keyring-daemon is handled by ~/.profile
