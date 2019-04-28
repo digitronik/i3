@@ -90,7 +90,7 @@ bindsym $mod+Shift+Right move right
 #bindsym $mod+h split h (I use $mod+h for filemanager)
 bindsym $mod+o split h
 # split in vertical orientation
-bindsym $mod+v split v
+#bindsym $mod+v split v
 
 # enter the fullscreen mode for the focused container
 bindsym $mod+f fullscreen
@@ -160,13 +160,19 @@ bindsym $mod+r mode "resize"
 # you can use mate-volume-control-applet
 #exec_always mate-volume-control-applet
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute sound
+bindsym $mod+v exec pavucontrol
 
-bindsym Shift+XF86AudioRaiseVolume exec pactl set-source-volume 1 +5% #increase mic volume
-bindsym Shift+XF86AudioLowerVolume exec pactl set-source-volume 1 -5% #decrease mic volume
-bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle # mute mic
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase system sound volume
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease system sound volume
+bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute system sound
+
+bindsym Shift+XF86AudioRaiseVolume exec pactl set-sink-volume 1 +5% #increase second out volume
+bindsym Shift+XF86AudioLowerVolume exec pactl set-sink-volume 1 -5% #decrease second out volume
+bindsym Shift+XF86AudioMute exec pactl set-sink-mute 1 toggle # mute system sound
+
+bindsym XF86AudioMicMute exec pactl set-source-mute 1 toggle # mute system mic
+
+#bindsym Shift+XF86AudioLowerVolume exec pactl set-source-volume 1 -5%
 
 # Run mate-settings-daemon for gnome-keyring
 # gnome-keyring-daemon is handled by ~/.profile
@@ -174,7 +180,7 @@ exec --no-startup-id /usr/libexec/mate-settings-daemon
 
 # To controlling system-wide privilege
 # Run xfce-polkit or polkit-mate-authentication-agent-1 for polkit
-exec lxpolkit
+exec xfce-polkit
 
 # I don't like notifications so I am not using. but you can get notifications
 # with dunst (dnf install dunst)
@@ -185,7 +191,7 @@ exec seapplet
 
 # I'm too lazy to jack with bluetoothctl all the time. As xfce user no bluetooth
 # applet pre-install so install(sudo dnf install blueman)
-#exec blueman-applet
+exec blueman-applet
 
 # redshift-gtk is for your eye care. I won't use it now.
 # exec redshift-gtk -l 18.52:73.85
@@ -194,7 +200,7 @@ exec seapplet
 exec --no-startup-id feh --bg-scale ~/.config/i3/Pictures/py_1.jpg
 
 # I am user of dropbox :D, so i added it. 
-exec --no-startup-id dropbox start
+#exec --no-startup-id dropbox start
 
 
 #-----------------------------i3bar--------------------------------------------
