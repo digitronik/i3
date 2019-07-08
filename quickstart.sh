@@ -1,15 +1,7 @@
 #!/bin/bash
 
-# i3lock installation
-sudo dnf i3lock
-
-# Enable i3block copper repo else install with source code
-sudo dnf -y copr enable wyvie/i3blocks
-sudo dnf install i3blocks
-
-# clear blocks created by i3blocks
-sudo rm -rf /usr/libexec/i3blocks
-
+# Install requinments
+sudo sh requirnments.sh
 # remove pre-config of i3
 sudo rm -rf ~/.config/i3
 

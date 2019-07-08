@@ -1,22 +1,35 @@
 #!/bin/bash
 
+# Enable i3block copper repo else install with source code
+sudo dnf -y copr enable wyvie/i3blocks
+sudo dnf -y install i3blocks
+
+# Clean by default scripts
+sudo rm -rf /usr/libexec/i3blocks
+
 # Monitor possition setting arandr
-sudo dnf install arandr
+sudo dnf -y install arandr
 
 # Terminal tilix
-sudo dnf install tilix
+sudo dnf -y install tilix
 
 # For laying out and rendering of text
-sudo dnf install pango
+sudo dnf -y install pango
 
 # For notification
-sudo dnf install dunst
+sudo dnf -y install dunst
 
 # For Bluetooth
-sudo dnf install blueman
+sudo dnf -y install blueman
 
 # For wallpaper and picture viewer
-sudo dnf install feh
+sudo dnf -y install feh
+
+# screen shooter for taking screenshot
+sudo dnf -y install xfce4-screenshooter
+
+# Power manger
+sudo dnf -y install xfce4-power-manager
 
 # reload i3 now
 echo
