@@ -6,10 +6,7 @@ sudo dnf install -y ansible git
 ansible-playbook -K setup.yml
 
 # remove pre-config of i3
-sudo rm -rf ~/.config/i3
-
-# copy downloaded file to config
-sudo cp -r ../ ~/.config/
+sudo mv ../i3 ~/.config/i3
 
 # reload i3 now
 echo
