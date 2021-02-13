@@ -9,7 +9,6 @@
 # If applets are going to die on a restart, use exec_always
 
 
-
 #--------------------------- Basic Setting ------------------------------------
 set $mod Mod4
 focus_follows_mouse yes
@@ -25,6 +24,11 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Nikhil,\
 Do you want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
 
+## Keyboard not working adding hacks
+#exec xmodmap -e "keycode 95 = colon semicolon colon semicolon"
+#exec xmodmap -e "keycode 96 = m M m M"
+
+
 #--------------------------- Utility KeyBindings-------------------------------
 ## arandr: Relative monitor positions are shown graphically and can be changed
 ## in a drag-and-drop way.(https://github.com/elpaso/arandr)
@@ -36,6 +40,10 @@ bindsym $mod+h exec pcmanfm
 ## screenshot utility
 ## Note: LXDE has no own screenshooter
 bindsym Print exec xfce4-screenshooter
+
+## screencast gif recorder
+bindsym $mod+Print exec sh ~/.config/i3/i3blocks/screencast toggle
+
 
 ## screen lock I used i3lock. Please install it while installing i3
 bindsym $mod+l exec i3lock -c 000000
@@ -92,7 +100,7 @@ bindsym $mod+Shift+Right move right
 #bindsym $mod+h split h (I use $mod+h for filemanager)
 bindsym $mod+o split h
 # split in vertical orientation
-#bindsym $mod+v split v
+bindsym $mod+v split v
 
 # enter the fullscreen mode for the focused container
 bindsym $mod+f fullscreen
@@ -162,7 +170,7 @@ bindsym $mod+r mode "resize"
 # you can use mate-volume-control-applet
 #exec_always mate-volume-control-applet
 # Pulse Audio controls
-bindsym $mod+v exec pavucontrol
+bindsym $mod+Shift+v exec pavucontrol
 
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +5% #increase system sound volume
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -5% #decrease system sound volume
