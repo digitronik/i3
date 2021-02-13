@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Install requinments
-sudo sh requirnments.sh
+# Do your setup
+sudo dnf update
+sudo dnf install -y ansible git
+ansible-playbook -K setup.yml
+
 # remove pre-config of i3
 sudo rm -rf ~/.config/i3
 

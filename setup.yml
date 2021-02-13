@@ -1,0 +1,99 @@
+---
+- hosts: localhost
+  become: True
+  tasks:
+    - name: Install i3blocks
+      block:
+        - name: Clone i3blocks source code
+          git:
+            repo: https://github.com/vivien/i3blocks.git
+            dest: /tmp/i3blocks
+        - name: Install i3blocks
+          command:
+            chdir: /tmp/i3blocks
+            cmd: ./autogen.sh && ./configure && make && make install
+        - name: Clean
+          file:
+            state: absent
+            path: /tmp/i3blocks
+
+    - name: Install xrectsel
+      pip:
+        name: python-xrectsel
+        extra_args: --user
+    - name: Enable Fedora Copr repo (Third party)
+      shell: dnf copr enable -y '{{ item }}'
+      with_items:
+        - vishalvvr/byzanz
+        - phracek/PyCharm
+
+    - name: Install Fedora workstation repositories for tools like google-chrome pycharm etc...
+      dnf:
+        name: fedora-workstation-repositories
+        state: present
+        update_cache: True
+
+    - name: Enable the RPM Fusion repository
+      dnf:
+        name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+        state: present
+        update_cache: True
+      when: ansible_distribution == 'Fedora'
+
+    - name: Remove Packages
+      dnf:
+        name: '{{ item }}'
+        state: absent
+        update_cache: True
+      with_items:
+        - asunder
+        - brasero
+        - galculator
+        - xpad
+        - midori
+        - pidgin
+        - rhythmbox
+        - shotwell
+        - sylpheed
+        - lxterminal
+        - lxtask
+        - lxmusic
+        - osmo
+        - thunar       # XFCE file manager
+
+    - name: Install Packages
+      dnf:
+        name: '{{ item }}'
+        state: present
+        update_cache: True
+      with_items:
+        - tilix         # Terminal
+        - fish          #shell
+        - pulseaudio    # Audio control
+        - pcmanfm       # FileManager
+        - abiword       # Doc
+        - gnumeric      # Sheet
+        - firefox       # Browser
+        - transmission  # Torrent Client
+        - arandr        # Sceen Management
+        - xfce4-screenshooter # Screenshot
+        - i3            # i3wm
+        - i3lock        # i3 screen lock
+        - xfce4-power-manager # Power manager
+        - NetworkManager-tui  # nmtui
+        - gnome-keyring # keyring
+        - xfce-polkit
+        - dunst         # Notification
+        - blueman       # Bluetooth
+        - feh           # Image managing
+        - leafpad       # Text
+        - gedit         # Text
+        - vlc
+        - pycharm-community
+    - name: Install Google Chrome
+      dnf:
+        name: google-chrome-stable
+        enablerepo: google-chrome
+        state: present
+        update_cache: True
+...
