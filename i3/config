@@ -209,7 +209,7 @@ exec --no-startup-id gnome-keyring
 # exec redshift-gtk -l 18.52:73.85
 
 # I use feh to manage images than other bully image managing software. set wall
-exec --no-startup-id feh --bg-scale ~/.config/i3/Pictures/py_1.jpg
+exec --no-startup-id feh --bg-scale ~/.config/i3/pictures/py_1.jpg
 
 # I am user of dropbox :D, so i added it. 
 #exec --no-startup-id dropbox start

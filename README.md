@@ -1,51 +1,39 @@
-# **i3 and i3blocks**
-*My i3 configuration files.*
+# Fedora i3 Configuration Files
 
-I am a Fedora user. I like to use `minimal`, `light weight OS` and `softwares`. I choose [Fedora-Xfce](https://spins.fedoraproject.org/xfce/) as my operating system. The Fedora Xfce spin showcases the `Xfce` desktop, which aims to be `fast` and `lightweight`.
+As a Fedora user who values a minimal and lightweight operating system, I have chosen the [Fedora i3 spin](https://fedoraproject.org/spins/i3/) as my preferred operating system. 
+This spin aligns with my preference for a minimalistic and efficient user experience.
 
-I was not happy with it. I like more `customization` having my own `shortcuts`, `blocks` giving me `system information`, about `storage`, `networks`, `IPs` including my running `Docker container IPs`, `easy window management` and all those with keys :D.
+## Customization and Preferences
 
-While `resizing` or `moving` `windows`; I don't like to use a `mouse`. I like to `shuffle` all those `window containers` with my `key-binding`.
+I have a keen interest in customization, creating my own shortcuts, and configuring blocks that provide essential system information. This includes details about storage, network status, battery status, and facilitates easy window management – all accessible with keyboard shortcuts.
 
-So, I adopted [i3](https://i3wm.org/) as my `Windows Manager` but, `simple bar` :(. I don't like it. I want more `customization` so, I am using [i3bloks](https://github.com/vivien/i3blocks).
+In my workflow, I prioritize keyboard-centric actions and avoid using a mouse whenever possible. Whether it's resizing or moving windows, I prefer to execute these actions with my personalized key bindings.
 
+## Polybar for Bar Customization
 
-How's my laptop `top-bar` looks?
-![i3blocks bar](Pictures/block_bar.png)
+For enhancing the appearance and functionality of my desktop, I use [Polybar](https://github.com/polybar/polybar). Polybar allows me to customize the status bar at the top of my screen, providing information at a glance and offering quick access to various functionalities.
 
-My `desktop` look...
-![window](Pictures/screen.png)
+## Installation Process
 
-## Installation:
-As `Fedora` user; I am building this as per `Fedora-Xfce` :D. you have to find your own ways. `Google baba` is there.
+To set up my customized i3 environment, follow these steps:
 
-- i3 install
-```
-sudo dnf install i3
-```
+1. Install the required packages:
 
-- `Logout` and `Login` with `i3` `windows manager`. Create `default` `configuration` files.
-
-- clone repo in temp dir
-```
-cd /tmp/
-git clone https://github.com/digitronik/i3.git
-cd i3
-```
-
-- Run `quickstart.sh` for installing `i3bloks` remove some unwanted files and move `configuration` files. 
-```
-sudo chmod +x quickstart.sh
-./quickstart.sh
-```
-
-- Some `lightweight` software; I used with `fedora-xfce`. If you like you can use.
-```
-sudo chmod +x requirnments.sh
-./requirnments.sh
-```
-
-- Edit your `i3` files as per `requirements` and `softwares` available with your system.
-```
-vi ~/.config/i3/config
-```
+   ```bash
+   sudo dnf install -y $(cat packages)
+   ```
+2. Copy `i3` and `polybar` configurations to the `~/.config` directory:
+   ```bash
+   cp -r i3 ~/.config/
+   cp -r polybar ~/.config/
+   ```
+3. Copy `fonts` to the `~/.local/share/fonts/` directory:
+   ```bash
+   cp -r fonts ~/.local/share/fonts/
+   ```
+4. Install additional packages for the `screencast` script:
+   ```bash
+   sudo dnf copr enable vishalvvr/byzanz
+   sudo dnf install byzanz
+   pip install python-xrectsel --user
+   ```
