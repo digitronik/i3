@@ -1,33 +1,39 @@
 #!/bin/sh
+# A zenity-based settings menu for Polybar
 
-ask=`zenity --list --title="Settings" --column="0" "Audio" "Display" "Network Connections" "Wi-Fi Network" "Mouse and Keyboard" "Polybar Config" "i3 Config" --width=100 --height=300 --hide-header`
+choice=$(zenity --list \
+    --title="Settings" \
+    --column="Option" \
+    "Audio" "Display" "Network Connections" "Wi-Fi Network" "Mouse and Keyboard" "Polybar Config" "i3 Config" \
+    --width=200 --height=300 --hide-header)
 
-if [ "$ask" == "Audio" ]; then
-	pavucontrol
-fi
-
-if [ "$ask" == "Display" ]; then
-	arandr
-fi
-
-if [ "$ask" == "Network Connections" ]; then
-	nm-connection-editor
-fi
-
-if [ "$ask" == "Wi-Fi Network" ]; then
-	rofi-wifi-menu
-fi
-
-if [ "$ask" == "Polybar Config" ]; then
-	subl3 ~/.config/polybar/config
-fi
-
-if [ "$ask" == "i3 Config" ]; then
-	subl3 ~/.config/i3/config
-fi
-
-if [ "$ask" == "Mouse and Keyboard" ]; then
-	lxinput
-fi
+case "$choice" in
+    "Audio")
+        pavucontrol
+        ;;
+    "Display")
+        arandr
+        ;;
+    "Network Connections")
+        nm-connection-editor
+        ;;
+    "Wi-Fi Network")
+        # rofi-wifi-menu requires rofi to be installed
+        rofi-wifi-menu
+        ;;
+    "Polybar Config")
+        # Opens the file with your default text editor
+        xdg-open ~/.config/polybar/config.ini
+        ;;
+    "i3 Config")
+        # Opens the file with your default text editor
+        xdg-open ~/.config/i3/config
+        ;;
+    "Mouse and Keyboard")
+        # lxinput is part of lxappearance
+        # sudo dnf install lxappearance
+        lxinput
+        ;;
+esac
 
 exit 0
