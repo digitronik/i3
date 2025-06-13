@@ -1,20 +1,18 @@
-#!/bin/sh
-lock() {
-    i3lock-fancy -g
-}
+#!/bin/bash
+# A script to handle locking and power operations, called by powermenu.sh
 
 case "$1" in
     lock)
-        lock
+        i3lock -c 000000
         ;;
     logout)
         i3-msg exit
         ;;
     suspend)
-        lock && systemctl suspend
+        i3lock -c 000000 && systemctl suspend
         ;;
     hibernate)
-        lock && systemctl hibernate
+        i3lock -c 000000 && systemctl hibernate
         ;;
     reboot)
         systemctl reboot
