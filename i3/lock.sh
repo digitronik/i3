@@ -1,5 +1,12 @@
 #!/bin/bash
-# A script to handle locking and power operations, called by powermenu.sh
+# =============================================================================
+# lock.sh — Central handler for session and power operations.
+#
+# Called by both i3 keybindings and the Polybar power menu to ensure a
+# single, consistent code path for all lock/power actions.
+#
+# Usage: lock.sh {lock|logout|suspend|hibernate|reboot|shutdown}
+# =============================================================================
 
 case "$1" in
     lock)
@@ -21,8 +28,7 @@ case "$1" in
         systemctl poweroff
         ;;
     *)
-        echo "Usage: $0 {lock|logout|suspend|hibernate|reboot|shutdown}"
+        echo "Usage: $(basename "$0") {lock|logout|suspend|hibernate|reboot|shutdown}" >&2
         exit 2
+        ;;
 esac
-
-exit 0
