@@ -7,71 +7,43 @@ This repository contains the complete configuration for my minimalist, keyboard-
 
 ## 1. Installation on Fedora
 
-This guide assumes you are starting with the Fedora i3 Spin or have i3 installed.
+This guide assumes you are starting with a fresh Fedora install.
 
-1.  **Install All Required Packages**
+### Step 1 — Clone the Repository
 
-    First, update your system. Then, install all the necessary applications, utilities, and daemons with a single command.
+```bash
+git clone https://github.com/digitronik/i3.git ~/Softwares/i3
+cd ~/Softwares/i3
+```
 
-    ```bash
-    sudo dnf copr enable vishalvvr/byzanz
-    sudo dnf update
+### Step 2 — Run the Install Script
 
-    sudo dnf install i3 polybar dmenu tilix thunar arandr xfce4-screenshooter byzanz zenity pavucontrol brightnessctl feh blueman i3lock python3-pip rofi NetworkManager-tui lxappearance
-    ```
+A single script handles everything: packages, custom repos, fonts, and build tools. It skips anything already installed and reports any failures clearly at the end.
 
-2.  **Install Additional Python Package**
+```bash
+bash install.sh
+```
 
-    The screencast script requires `python-xrectsel` for selecting screen regions.
+### Step 3 — Deploy the Config
 
-    ```bash
-    pip install --user python-xrectsel
-    ```
+Backup existing configs and copy the new ones:
 
-3.  **Install Fonts**
+```bash
+mv ~/.config/i3 ~/.config/i3.bak 2>/dev/null || true
+mv ~/.config/polybar ~/.config/polybar.bak 2>/dev/null || true
 
-    This setup requires two fonts: **Droid Sans** (for text) and **Font Awesome 6** (for icons in Polybar). Both are included in the `fonts/` directory of this repository for convenience.
+cp -r ./i3 ~/.config/
+cp -r ./polybar ~/.config/
 
-    ```bash
-    mkdir -p ~/.local/share/fonts
-    cp -r ./fonts/droid-sans/. ~/.local/share/fonts/
-    cp -r ./fonts/font-awesome/. ~/.local/share/fonts/
-    fc-cache -fv
-    ```
+chmod +x ~/.config/i3/*.sh
+chmod +x ~/.config/polybar/*.sh
+```
 
-    Alternatively, install via package manager:
+> **Wallpaper:** Place your wallpaper images in `~/.config/i3/pictures/`. A random image is picked on every i3 reload.
 
-    * **Droid Sans:**
-        ```bash
-        sudo dnf install google-droid-sans-fonts
-        ```
-    * **Font Awesome 6:**
-        ```bash
-        sudo dnf install fontawesome-fonts
-        ```
+### Step 4 — Reload i3
 
-4.  **Configure Your System**
-
-    * **Backup Your Existing Configs:**
-        ```bash
-        mv ~/.config/i3 ~/.config/i3.bak
-        mv ~/.config/polybar ~/.config/polybar.bak
-        ```
-    * **Copy the New Config Folders:**
-        ```bash
-        cp -r ./i3 ~/.config/
-        cp -r ./polybar ~/.config/
-        ```
-    * **Make All Scripts Executable:**
-        ```bash
-        chmod +x ~/.config/i3/*.sh
-        chmod +x ~/.config/polybar/*.sh
-        ```
-    * **Set Your Wallpaper:** The i3 config looks for wallpapers in `~/.config/i3/pictures/`. Make sure that directory exists and has at least one image file in it. On every i3 reload, a random image from that folder will be set as the wallpaper.
-
-5.  **Reload i3**
-
-    Reload your i3 configuration in-place by pressing `$mod+Shift+c`, or log out (`$mod+Shift+e`) and back in to have all startup services running.
+Press `$mod+Shift+c` to reload in-place, or log out and back in for a full restart.
 
 ---
 
@@ -125,11 +97,11 @@ The modifier key is the **Super** key (Windows key), referred to as `$mod`.
 | :--- | :--- |
 | `i3/lock.sh` | Central handler for all power and session actions (lock, logout, suspend, hibernate, reboot, shutdown). Called by both the Polybar power menu and i3 keybindings. |
 | `i3/battery_notify.sh` | Runs in the background to send desktop notifications when battery is low (≤20%) or fully charged (≥98%). Uses a PID file to ensure only one instance runs at a time. |
-| `i3/screencast.sh` | Records a selected screen region as a GIF using `byzanz` and `xrectsel`. Toggle start/stop with `$mod+PrintScreen`. Tracks the recorder PID directly so stopping is precise and doesn't affect other processes. |
+| `i3/screencast.sh` | Records a selected screen region as a GIF using `byzanz` and `xrectsel`. Toggle start/stop with `$mod+PrintScreen`. Tracks the recorder PID so stopping is precise. |
 | `polybar/launch.sh` | Kills any running Polybar/i3bar instances and starts Polybar fresh. Called on every i3 reload via `exec_always`. |
-| `polybar/bluetooth.sh` | Displays Bluetooth status (on/off/connected device) in Polybar. Left-click toggles power; right-click opens `blueman-manager`. Includes a fix for the bluetoothctl startup race condition. |
-| `polybar/check-vpn.sh` | Checks for an active VPN connection (via `tun0` interface) and updates the Polybar VPN module with a green "Active" or red "Down" indicator. |
-| `polybar/powermenu.sh` | Displays a `zenity` pop-up power menu. Accessible by clicking the power icon in Polybar. |
-| `polybar/settings.sh` | Displays a `zenity` pop-up settings menu with quick access to audio, display, network, and config files. Accessible by clicking the gear icon in Polybar. |
+| `polybar/bluetooth.sh` | Displays Bluetooth status (on/off/connected device) in Polybar. Left-click toggles power; right-click opens `blueman-manager`. |
+| `polybar/check-vpn.sh` | Checks for an active VPN connection (via `tun0`) and shows green "VPN Active" or red "VPN Down" in Polybar. |
+| `polybar/powermenu.sh` | Displays a `zenity` pop-up power menu. Accessible via the power icon in Polybar. |
+| `polybar/settings.sh` | Displays a `zenity` pop-up settings menu with quick access to audio, display, network, and config files. |
 
 ---
