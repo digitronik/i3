@@ -2,227 +2,144 @@
 #                           Nikhil's i3wm Configuration
 # =============================================================================
 
-### Variables -----------------------------------------------------------------
-# Use Mod4 (Super/Windows key) as the main modifier
-set $mod Mod4
+# Variables -------------------------------------------------------------------
 
-# Define a terminal and file manager
-set $terminal tilix
+set $mod         Mod4
+set $terminal    tilix
 set $filemanager thunar
 
-### Theming: Gaps and Borders ------------------------------------------------
-# Set inner and outer gaps
-gaps inner 1
-gaps outer 1
+# Appearance ------------------------------------------------------------------
 
-# Set border style
-default_border pixel 1
-
-# Define colors for focused and unfocused windows
-#                      border  backgr. text    indicator child_border
-client.focused         #A44BA0 #A44BA0 #EEEEEE #6633FF   #A44BA0
-client.unfocused       #333333 #333333 #999999 #111111   #333333
-client.focused_inactive #333333 #333333 #999999 #111111   #333333
-client.urgent          #D95B5B #D95B5B #EEEEEE #D95B5B   #D95B5B
-
-
-### Fonts ---------------------------------------------------------------------
 font pango:Droid Sans Mono, Font Awesome 6 Free Solid 11
 
+gaps inner 1
+gaps outer 1
+default_border pixel 1
 
-# =============================================================================
-#                       Keybindings & Modes
-# =============================================================================
+#                        border   bg       text     indicator child_border
+client.focused           #A44BA0  #A44BA0  #EEEEEE  #6633FF   #A44BA0
+client.focused_inactive  #333333  #333333  #999999  #111111   #333333
+client.unfocused         #333333  #333333  #999999  #111111   #333333
+client.urgent            #D95B5B  #D95B5B  #EEEEEE  #D95B5B   #D95B5B
 
-### Application Launchers -----------------------------------------------------
-# Program launcher (dmenu)
-bindsym $mod+d exec dmenu_run -fn '-*-liberation mono-medium-r-normal-*-15-*-*-*-*-*-*-uni'
+# Keybindings -----------------------------------------------------------------
 
-# Terminal and File Manager
-bindsym $mod+Return exec $terminal
-bindsym $mod+t exec $terminal
-bindsym $mod+h exec $filemanager
+# --- Application Launchers ---
+bindsym $mod+d       exec dmenu_run -fn '-*-liberation mono-medium-r-normal-*-15-*-*-*-*-*-*-uni'
+bindsym $mod+Return  exec $terminal
+bindsym $mod+t       exec $terminal
+bindsym $mod+h       exec $filemanager
 
+# --- System & Session ---
+bindsym $mod+Shift+c  reload
+bindsym $mod+Shift+e  exec "i3-nagbar -t warning -m 'Nikhil, Do you want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+l        exec sh ~/.config/i3/lock.sh lock
+bindsym $mod+Shift+h  exec sh ~/.config/i3/lock.sh hibernate
+bindsym $mod+Shift+r  exec sh ~/.config/i3/lock.sh reboot
+bindsym $mod+Shift+s  exec sh ~/.config/i3/lock.sh shutdown
 
-### System Control & Power Operations ---------------------------------------
-# Reload i3 configuration
-bindsym $mod+Shift+c reload
+# --- Utilities ---
+bindsym $mod+m        exec arandr
+bindsym $mod+Shift+v  exec pavucontrol
+bindsym Print         exec xfce4-screenshooter
+bindsym $mod+Print    exec sh ~/.config/i3/screencast.sh toggle
 
-# Exit i3 (with your preferred i3-nagbar confirmation)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Nikhil, Do you want to exit i3?' -b 'Yes, exit i3' 'i3-msg exit'"
+# --- Window Management ---
+bindsym $mod+Shift+q  kill
 
-# Lock the screen
-bindsym $mod+l exec i3lock -c 000000
+bindsym $mod+Left   focus left
+bindsym $mod+Down   focus down
+bindsym $mod+Up     focus up
+bindsym $mod+Right  focus right
 
-# --- Direct Power Shortcuts ---
-# WARNING: These actions are immediate and have no confirmation.
-# Use with caution.
+bindsym $mod+Shift+Left   move left
+bindsym $mod+Shift+Down   move down
+bindsym $mod+Shift+Up     move up
+bindsym $mod+Shift+Right  move right
 
-# Put laptop on hibernate (locks screen first)
-bindsym $mod+Shift+h exec --no-startup-id i3lock && systemctl hibernate
+bindsym $mod+o  split h
+bindsym $mod+v  split v
+bindsym $mod+f  fullscreen toggle
 
-# Restart laptop
-bindsym $mod+Shift+r exec --no-startup-id systemctl reboot
+bindsym $mod+s  layout stacking
+bindsym $mod+w  layout tabbed
+bindsym $mod+e  layout toggle split
 
-# Shutdown laptop
-bindsym $mod+Shift+s exec --no-startup-id systemctl poweroff
+bindsym $mod+Shift+space  floating toggle
+bindsym $mod+space        focus mode_toggle
+bindsym $mod+a            focus parent
 
+# --- Scratchpad ---
+bindsym $mod+Shift+minus  move scratchpad
+bindsym $mod+minus        scratchpad show
 
-### Utility Bindings ----------------------------------------------------------
-# Display manager (arandr)
-bindsym $mod+m exec arandr
+# --- Workspaces ---
+set $ws1  "1"
+set $ws2  "2"
+set $ws3  "3"
+set $ws4  "4"
+set $ws5  "5"
+set $ws6  "6"
+set $ws7  "7"
+set $ws8  "8"
+set $ws9  "9"
+set $ws10 "10"
 
-# Screenshot utility
-bindsym Print exec xfce4-screenshooter
+bindsym $mod+1  workspace $ws1
+bindsym $mod+2  workspace $ws2
+bindsym $mod+3  workspace $ws3
+bindsym $mod+4  workspace $ws4
+bindsym $mod+5  workspace $ws5
+bindsym $mod+6  workspace $ws6
+bindsym $mod+7  workspace $ws7
+bindsym $mod+8  workspace $ws8
+bindsym $mod+9  workspace $ws9
+bindsym $mod+0  workspace $ws10
 
-# Screencast GIF recorder
-bindsym $mod+Print exec sh ~/.config/i3/screencast.sh toggle
+bindsym $mod+Shift+1  move container to workspace $ws1
+bindsym $mod+Shift+2  move container to workspace $ws2
+bindsym $mod+Shift+3  move container to workspace $ws3
+bindsym $mod+Shift+4  move container to workspace $ws4
+bindsym $mod+Shift+5  move container to workspace $ws5
+bindsym $mod+Shift+6  move container to workspace $ws6
+bindsym $mod+Shift+7  move container to workspace $ws7
+bindsym $mod+Shift+8  move container to workspace $ws8
+bindsym $mod+Shift+9  move container to workspace $ws9
+bindsym $mod+Shift+0  move container to workspace $ws10
 
-
-### Window Management ---------------------------------------------------------
-# Kill focused window
-bindsym $mod+Shift+q kill
-
-# Change focus with arrow keys
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-
-# Move focused window with arrow keys
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
-# Split orientation
-bindsym $mod+o split h # horizontal
-bindsym $mod+v split v # vertical
-
-# Fullscreen mode
-bindsym $mod+f fullscreen toggle
-
-# Change container layout
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
-
-# Toggle tiling/floating
-bindsym $mod+Shift+space floating toggle
-
-# Change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
-
-# Focus the parent container
-bindsym $mod+a focus parent
-
-
-### Scratchpad (Dropdown Terminal) --------------------------------------------
-# A scratchpad is a hidden window you can quickly show/hide on any workspace.
-# Move the currently focused window to the scratchpad
-bindsym $mod+Shift+minus move scratchpad
-# Show/hide the first scratchpad window
-bindsym $mod+minus scratchpad show
-
-
-### Workspaces ----------------------------------------------------------------
-# Define workspace names with icons
-set $ws1 "1: "
-set $ws2 "2: "
-set $ws3 "3: "
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10: "
-
-# Switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
-bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
-
-# Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
-
-
-### Resize Mode ---------------------------------------------------------------
+# --- Resize Mode ---
 mode "resize" {
-    # Arrow keys
-    bindsym Left  resize shrink width 10 px or 10 ppt
-    bindsym Down  resize grow   height 10 px or 10 ppt
-    bindsym Up    resize shrink height 10 px or 10 ppt
-    bindsym Right resize grow   width 10 px or 10 ppt
+    bindsym Left   resize shrink width  10 px or 10 ppt
+    bindsym Down   resize grow   height 10 px or 10 ppt
+    bindsym Up     resize shrink height 10 px or 10 ppt
+    bindsym Right  resize grow   width  10 px or 10 ppt
 
-    # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym Return  mode "default"
+    bindsym Escape  mode "default"
 }
-bindsym $mod+r mode "resize"
+bindsym $mod+r  mode "resize"
 
+# --- Media & Hardware Keys ---
+bindsym XF86AudioRaiseVolume   exec --no-startup-id pactl set-sink-volume   @DEFAULT_SINK@   +5%
+bindsym XF86AudioLowerVolume   exec --no-startup-id pactl set-sink-volume   @DEFAULT_SINK@   -5%
+bindsym XF86AudioMute          exec --no-startup-id pactl set-sink-mute     @DEFAULT_SINK@   toggle
+bindsym XF86AudioMicMute       exec --no-startup-id pactl set-source-mute   @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessUp    exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown  exec --no-startup-id brightnessctl set 5%-
 
-### Media & Hardware Keys -----------------------------------------------------
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-bindsym XF86AudioMicMute     exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
-# Open pavucontrol for advanced audio settings
-bindsym $mod+Shift+v exec pavucontrol
+# Autostart -------------------------------------------------------------------
 
-# Brightness control
-bindsym XF86MonBrightnessUp   exec --no-startup-id brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
-
-
-# =============================================================================
-#                        Startup Programs & Floating Windows
-# =============================================================================
-
-### Autostart Programs --------------------------------------------------------
-# Use feh to set a random wallpaper from a directory
-exec --no-startup-id feh --randomize --bg-scale ~/.config/i3/pictures/
-
-# Launch Polybar
+exec_always --no-startup-id feh --randomize --bg-scale ~/.config/i3/pictures/
 exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 
-# Start notification daemons and applets
-exec --no-startup-id sh ~/.config/i3/battery_notify.sh # Our battery script
-# exec --no-startup-id dunst
+exec --no-startup-id sh ~/.config/i3/battery_notify.sh
 exec --no-startup-id blueman-applet
-# exec --no-startup-id nm-applet
 
-# A Note on Keyboard Hacks:
-# The `xmodmap` commands are not very reliable. The modern way to remap
-# keys is with xkb. Searching for "custom xkb layout" will provide more
-# robust solutions.
-#exec xmodmap -e "keycode 95 = colon semicolon colon semicolon"
-#exec xmodmap -e "keycode 96 = m M m M"
+# Window Rules ----------------------------------------------------------------
 
-
-### Floating Window Rules -----------------------------------------------------
-# Make specific applications always float
-for_window [class="Arandr"] floating enable
-for_window [class="Pavucontrol"] floating enable
-for_window [class="Yad"] floating enable
-for_window [title="alsamixer"] floating enable
-
-# Use Mouse+$mod to drag floating windows
 floating_modifier $mod
+
+for_window [class="Arandr"]      floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Yad"]         floating enable
+for_window [title="alsamixer"]   floating enable

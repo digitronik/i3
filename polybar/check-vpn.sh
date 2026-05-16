@@ -1,19 +1,17 @@
 #!/bin/bash
-
-# A script to check for an active VPN connection and display a Polybar module.
-# This version shows a "down" status when not connected.
+# =============================================================================
+# check-vpn.sh — Polybar module for VPN connection status.
+#
+# Checks for the presence of a tun0 interface (standard OpenVPN tunnel).
+# Outputs a Polybar-formatted string with green VPN Active or red VPN Down.
+# =============================================================================
 
 INTERFACE="tun0"
+COLOR_ACTIVE="#249824"
+COLOR_DOWN="#D95B5B"
 
-# Check if the tun0 interface exists using ip addr
 if ip addr show "$INTERFACE" > /dev/null 2>&1; then
-    # If it exists, print the "connected" format.
-    # It will be green and underlined.
-    # Icon:  (lock)
-    echo "%{u#249824}%{+u}%{F#249824}%{T3}%{T-}%{F-} VPN Active%{u-}"
+    echo "%{u$COLOR_ACTIVE}%{+u}%{F$COLOR_ACTIVE}%{T3}%{T-}%{F-} VPN Active%{u-}"
 else
-    # If it does not exist, print the "disconnected" format.
-    # It will be red and not underlined.
-    # Icon:  (unlock-alt)
-    echo "%{F#D95B5B}%{T3}%{T-}%{F-} VPN Down"
+    echo "%{F$COLOR_DOWN}%{T3}%{T-}%{F-} VPN Down"
 fi

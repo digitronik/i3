@@ -1,14 +1,13 @@
 #!/bin/bash
+# =============================================================================
+# launch.sh — Start Polybar, killing any existing instances first.
+# Called by i3 via exec_always on login and every config reload.
+# =============================================================================
 
-# Terminate already running bar instances
 killall -q i3bar
 killall -q polybar
 
-# Wait until the processes have been shut down
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+while pgrep -u "$UID" -x polybar > /dev/null; do sleep 1; done
 
-sleep 1;
-# Launch Polybar, using default config location ~/.config/polybar/config
+sleep 1
 polybar main -r &
-
-echo "Polybar launched..."
