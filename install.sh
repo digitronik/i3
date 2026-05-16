@@ -154,7 +154,7 @@ echo "  $(printf '%.0s═' {1..50})"
 section "System Update"
 info "Running dnf upgrade..."
 if sudo dnf upgrade -y &>/dev/null; then
-    success "System up to date"
+    info "System up to date"
 else
     fail "System update (non-critical, continuing)"
 fi
@@ -223,7 +223,7 @@ fi
 
 info "Rebuilding font cache..."
 if fc-cache -fv &>/dev/null; then
-    success "Font cache rebuilt"
+    info "Font cache rebuilt"
 else
     fail "Font cache rebuild"
 fi
@@ -401,4 +401,39 @@ fi
 echo ""
 echo -e "  ${GREEN}${BOLD}All packages installed successfully!${NC}"
 echo -e "  Reload i3 with ${BOLD}Mod+Shift+c${NC} to apply changes."
+echo "  $(printf '%.0s═' {1..50})"
+
+# =============================================================================
+# Bootstrap dotstation CLI
+# =============================================================================
+section "dotstation CLI"
+
+if ! is_cmd "uv"; then
+    info "Installing uv..."
+    if curl -LsSf https://astral.sh/uv/install.sh | sh &>/dev/null; then
+        success "uv"
+        export PATH="$HOME/.local/bin:$PATH"
+    else
+        fail "uv  (curl -LsSf https://astral.sh/uv/install.sh | sh)"
+    fi
+else
+    skip "uv"
+fi
+
+if is_cmd "uv"; then
+    if uv tool list 2>/dev/null | grep -q "^dotstation"; then
+        skip "dotstation CLI"
+    else
+        info "Installing dotstation CLI..."
+        if uv tool install "$SCRIPT_DIR" &>/dev/null; then
+            success "dotstation CLI installed"
+            dotstation init "$SCRIPT_DIR" &>/dev/null || true
+            echo ""
+            echo "  Run [dotstation --help] to get started."
+        else
+            fail "dotstation CLI  (uv tool install $SCRIPT_DIR)"
+        fi
+    fi
+fi
+
 echo "  $(printf '%.0s═' {1..50})"

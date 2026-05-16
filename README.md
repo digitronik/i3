@@ -1,107 +1,198 @@
-# My Minimalist i3 & Polybar Desktop on Fedora
+# dotstation
 
-This repository contains the complete configuration for my minimalist, keyboard-driven i3wm desktop environment running on the Fedora i3 Spin. It features a clean and functional Polybar status bar, custom menus for easy access to settings and power options, and several scripts to enhance usability.
+Personal workstation setup, backup, and restore CLI — built around a minimal i3wm desktop on Fedora.
 
-![screenshot-placeholder](docs/bar.png)
-
-
-## 1. Installation on Fedora
-
-This guide assumes you are starting with a fresh Fedora install.
-
-### Step 1 — Clone the Repository
-
-```bash
-git clone https://github.com/digitronik/i3.git ~/Softwares/i3
-cd ~/Softwares/i3
-```
-
-### Step 2 — Run the Install Script
-
-A single script handles everything: packages, custom repos, fonts, and build tools. It skips anything already installed and reports any failures clearly at the end.
-
-```bash
-bash install.sh
-```
-
-### Step 3 — Deploy the Config
-
-Backup existing configs and copy the new ones:
-
-```bash
-mv ~/.config/i3 ~/.config/i3.bak 2>/dev/null || true
-mv ~/.config/polybar ~/.config/polybar.bak 2>/dev/null || true
-
-cp -r ./i3 ~/.config/
-cp -r ./polybar ~/.config/
-
-chmod +x ~/.config/i3/*.sh
-chmod +x ~/.config/polybar/*.sh
-```
-
-> **Wallpaper:** Place your wallpaper images in `~/.config/i3/pictures/`. A random image is picked on every i3 reload.
-
-### Step 4 — Reload i3
-
-Press `$mod+Shift+c` to reload in-place, or log out and back in for a full restart.
+![bar](docs/bar.png)
 
 ---
 
-## 2. Usage & Keybindings
+## CLI Reference
 
-The modifier key is the **Super** key (Windows key), referred to as `$mod`.
+```
+dotstation [COMMAND] [SUBCOMMAND] [OPTIONS]
+```
+
+### `init` — Register repo path *(run once after cloning)*
+
+```bash
+dotstation init                        # register current directory as repo
+dotstation init ~/Softwares/dotstation # or specify the path explicitly
+```
+
+### `install` — Install all packages
+
+```bash
+dotstation install             # run install.sh (skips already-installed packages)
+dotstation install --dry-run   # show what would be installed, no changes
+```
+
+Handles dnf, COPR, custom repos (Docker, Chrome, Cursor, VS Code), pip, and fonts.
+
+### `deploy` — Deploy configs to `~/.config`
+
+```bash
+dotstation deploy all          # deploy i3 + polybar configs + fonts
+dotstation deploy i3           # deploy ~/.config/i3 only
+dotstation deploy polybar      # deploy ~/.config/polybar only
+dotstation deploy fonts        # install bundled fonts to ~/.local/share/fonts
+```
+
+Existing configs are automatically backed up as `.bak` before deploying.
+
+### `sync` — Sync live changes back into the repo
+
+```bash
+dotstation sync all            # sync ~/.config/i3 + ~/.config/polybar → repo
+dotstation sync i3             # sync i3 only
+dotstation sync polybar        # sync polybar only
+```
+
+Shows a git diff summary after syncing. Then commit manually when happy.
+
+### `backup` — Create a portable backup archive
+
+```bash
+dotstation backup all          # backup everything (GPG, SSH, dotfiles, configs)
+dotstation backup gpg          # backup ~/.gnupg only
+dotstation backup ssh          # backup ~/.ssh only (encrypted by default)
+dotstation backup dotfiles     # backup .gitconfig, fish config, /etc/hosts
+dotstation backup configs      # backup ~/.config/i3 and ~/.config/polybar
+```
+
+Backups are saved as timestamped `.tar.gz` archives in `~/dotstation-backups/`.  
+Pass `--encrypt` to GPG-encrypt the archive with a passphrase (`AES256`).
+
+> **On a fresh machine:** Encrypted backups use symmetric encryption (passphrase only — no GPG key required). `gpg` is pre-installed on Fedora. You just need the passphrase you set when backing up. Your GPG keys are restored *from* the backup itself.
+
+### `restore` — Restore from a backup archive
+
+```bash
+dotstation restore all         # restore everything (presents a list to pick from)
+dotstation restore gpg         # restore ~/.gnupg
+dotstation restore ssh         # restore ~/.ssh (fixes key permissions automatically)
+dotstation restore dotfiles    # restore .gitconfig, fish config, /etc/hosts
+dotstation restore configs     # restore i3 and polybar configs
+```
+
+### `status` — Show current state
+
+```bash
+dotstation status              # show backups, deployed configs, and key commands
+```
+
+---
+
+## Setup (Fresh Machine)
+
+### Step 1 — Get dotstation
+
+```bash
+# Clone the repo
+git clone https://github.com/digitronik/dotstation.git ~/dotstation
+cd ~/dotstation
+
+# Install uv (fast Python package manager — needed to install dotstation)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+source ~/.local/bin/env    # or open a new terminal
+
+# Install the dotstation CLI
+uv tool install .
+
+# Register the repo path (tells dotstation where the repo lives)
+dotstation init
+```
+
+> **Or do it all in one shot** — `bash install.sh` handles uv, the CLI, and all packages automatically:
+> ```bash
+> bash install.sh
+> ```
+
+### Step 2 — Install packages
+
+```bash
+dotstation install
+```
+
+Installs everything: i3, polybar, Docker, VS Code, Cursor, fonts, dev tools — skipping anything already present.
+
+### Step 3 — Restore your backup *(skip on first setup)*
+
+If you're coming from a previous machine and have a backup archive:
+
+```bash
+dotstation restore all     # pick from available backups interactively
+```
+
+This restores your GPG keys, SSH keys, dotfiles, and configs.
+
+### Step 4 — Deploy configs
+
+```bash
+dotstation deploy all      # deploys i3, polybar, and fonts to ~/.config
+```
+
+Reload i3 with `Mod+Shift+c`. Done.
+
+---
+
+## Daily Workflow
+
+After tweaking your live i3 or Polybar config:
+
+```bash
+dotstation sync all            # copy ~/.config → repo
+git add -A
+git commit -m "update config"
+git push
+```
+
+Before formatting or switching machines:
+
+```bash
+dotstation backup all          # creates ~/dotstation-backups/dotstation-backup-<date>.tar.gz
+# copy that file to an external drive or cloud storage
+```
+
+---
+
+## Keybindings
+
+The modifier key is **Super** (Windows key), referred to as `$mod`.
 
 | Keybinding | Action |
 | :--- | :--- |
-| **System Control** | |
-| `$mod+Shift+c` | Reload the i3 configuration file. |
-| `$mod+Shift+e` | Show a confirmation prompt to log out of i3. |
-| `$mod+l` | Lock the screen. |
-| `$mod+Shift+h` | Hibernate (locks screen first). |
-| `$mod+Shift+r` | Reboot. |
-| `$mod+Shift+s` | Shutdown. |
-| **Application Launchers** | |
-| `$mod+d` | Launch `dmenu` to run an application. |
-| `$mod+Return` or `$mod+t` | Open a new terminal (`tilix`). |
-| `$mod+h` | Open the file manager (`thunar`). |
-| **Window Management** | |
-| `$mod+Shift+q` | Kill the focused window. |
-| `$mod` + Arrow Keys | Change window focus. |
-| `$mod+Shift` + Arrow Keys | Move the focused window. |
-| `$mod+o` / `$mod+v` | Split horizontally / vertically. |
-| `$mod+f` | Toggle fullscreen for the focused window. |
-| `$mod+s` / `$mod+w` / `$mod+e` | Change layout (stacking / tabbed / toggle split). |
-| `$mod+Shift+space` | Toggle floating for the focused window. |
-| `$mod+r` | Enter resize mode (use arrow keys to resize). |
-| **Scratchpad** | |
-| `$mod+Shift+minus` | Move the focused window to the scratchpad. |
-| `$mod+minus` | Show/hide the scratchpad window. |
-| **Workspaces** | |
-| `$mod` + `1-0` | Switch to the corresponding workspace (1–10). |
-| `$mod+Shift` + `1-0` | Move the focused window to that workspace. |
-| **Hardware & Utilities** | |
-| `PrintScreen` | Open `xfce4-screenshooter` for a screenshot. |
-| `$mod+PrintScreen` | Start/Stop recording a screen region as a GIF. |
-| `$mod+m` | Open display settings (`arandr`). |
-| `$mod+Shift+v` | Open advanced audio controls (`pavucontrol`). |
-| `Volume Up / Down` | Increase / decrease system volume by 5%. |
-| `Mute` | Toggle system audio mute. |
-| `Mic Mute` | Toggle microphone mute. |
-| `Brightness Up / Down` | Increase / decrease screen brightness. |
+| `$mod+Shift+c` | Reload i3 config |
+| `$mod+Shift+e` | Log out (with confirmation) |
+| `$mod+l` | Lock screen |
+| `$mod+Shift+h` | Hibernate |
+| `$mod+Shift+r` | Reboot |
+| `$mod+Shift+s` | Shutdown |
+| `$mod+d` | dmenu launcher |
+| `$mod+Return` / `$mod+t` | Open terminal (tilix) |
+| `$mod+h` | Open file manager (thunar) |
+| `$mod+Shift+q` | Kill window |
+| `$mod+f` | Fullscreen toggle |
+| `$mod+r` | Resize mode |
+| `$mod+Shift+minus` | Move to scratchpad |
+| `$mod+minus` | Show scratchpad |
+| `$mod+1-0` | Switch workspace |
+| `$mod+Shift+1-0` | Move window to workspace |
+| `PrintScreen` | Screenshot |
+| `$mod+PrintScreen` | Start/stop GIF screen recording |
+| `$mod+m` | Display manager (arandr) |
+| `$mod+Shift+v` | Audio controls (pavucontrol) |
 
 ---
 
-## 3. Scripts Overview
+## Scripts
 
 | Script | Description |
 | :--- | :--- |
-| `i3/lock.sh` | Central handler for all power and session actions (lock, logout, suspend, hibernate, reboot, shutdown). Called by both the Polybar power menu and i3 keybindings. |
-| `i3/battery_notify.sh` | Runs in the background to send desktop notifications when battery is low (≤20%) or fully charged (≥98%). Uses a PID file to ensure only one instance runs at a time. |
-| `i3/screencast.sh` | Records a selected screen region as a GIF using `byzanz` and `xrectsel`. Toggle start/stop with `$mod+PrintScreen`. Tracks the recorder PID so stopping is precise. |
-| `polybar/launch.sh` | Kills any running Polybar/i3bar instances and starts Polybar fresh. Called on every i3 reload via `exec_always`. |
-| `polybar/bluetooth.sh` | Displays Bluetooth status (on/off/connected device) in Polybar. Left-click toggles power; right-click opens `blueman-manager`. |
-| `polybar/check-vpn.sh` | Checks for an active VPN connection (via `tun0`) and shows green "VPN Active" or red "VPN Down" in Polybar. |
-| `polybar/powermenu.sh` | Displays a `zenity` pop-up power menu. Accessible via the power icon in Polybar. |
-| `polybar/settings.sh` | Displays a `zenity` pop-up settings menu with quick access to audio, display, network, and config files. |
-
----
+| `i3/lock.sh` | Central handler for lock, logout, suspend, hibernate, reboot, shutdown |
+| `i3/battery_notify.sh` | Background daemon — notifies on low (≤20%) and full (≥98%) battery |
+| `i3/screencast.sh` | GIF screen recorder via `byzanz` — toggle with `$mod+PrintScreen` |
+| `polybar/launch.sh` | Kills existing bar instances and starts Polybar fresh |
+| `polybar/bluetooth.sh` | Bluetooth status module — left-click toggles power |
+| `polybar/check-vpn.sh` | VPN status module (checks `tun0` interface) |
+| `polybar/powermenu.sh` | Zenity-based power menu |
+| `polybar/settings.sh` | Zenity-based settings menu |
